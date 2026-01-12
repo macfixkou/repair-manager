@@ -15,7 +15,7 @@ export const loginSchema = z.object({
 
 const baseCaseSchema = z.object({
   receivedAt: z.string().min(1, "受付日を入力してください。"),
-  assigneeUserId: z.number().int().optional().nullable(),
+  assigneeUserId: z.string().uuid().optional().nullable(),
   status: z.nativeEnum(CaseStatus).optional(),
   customerName: z.string().optional().nullable(),
   customerContact: z.string().optional().nullable(),
