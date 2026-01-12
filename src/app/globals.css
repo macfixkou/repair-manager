@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+body.theme-landing {
+  background: linear-gradient(135deg, #e6ecff 0%, #e6e3ff 45%, #e4f0ff 100%);
+  color: #1f2a44;
+}
+
+body.theme-landing header {
+  background: rgba(10, 16, 40, 0.75) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+body.theme-landing .bg-white {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(43, 58, 103, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+body.theme-landing .shadow {
+  box-shadow: 0 20px 50px rgba(12, 18, 40, 0.35) !important;
+}
+
+body.theme-landing .bg-gray-50 {
+  background: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.theme-landing .text-gray-900,
+body.theme-landing .text-gray-800,
+body.theme-landing .text-gray-700 {
+  color: #1f2a44 !important;
+}
+
+body.theme-landing .text-gray-600,
+body.theme-landing .text-gray-500,
+body.theme-landing .text-gray-400,
+body.theme-landing .text-gray-300 {
+  color: #3c4a6b !important;
+}
+
+body.theme-landing .text-gray-200 {
+  color: #eaf0ff !important;
+}
+
+body.theme-landing .border {
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+body.theme-landing input,
+body.theme-landing select,
+body.theme-landing textarea {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(20, 28, 52, 0.45) !important;
+  box-shadow: inset 0 0 0 1px rgba(20, 28, 52, 0.25);
+  color: #1f2a44 !important;
+}
+
+body.theme-landing input:focus,
+body.theme-landing select:focus,
+body.theme-landing textarea:focus {
+  border-color: #4361ee !important;
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2) !important;
+}
+
+body.theme-landing input::placeholder,
+body.theme-landing textarea::placeholder {
+  color: #7f8ab0;
+}
+
+body.theme-landing .bg-emerald-600,
+body.theme-landing .bg-emerald-500 {
+  background-image: linear-gradient(135deg, #4cc9f0, #4361ee, #3a0ca3) !important;
+}
+
+body.theme-landing .bg-slate-800,
+body.theme-landing .bg-slate-900 {
+  background-image: linear-gradient(135deg, #2b3a67, #3a2f9c) !important;
+}
+
+body.theme-landing .bg-emerald-600:hover,
+body.theme-landing .bg-emerald-500:hover,
+body.theme-landing .bg-slate-800:hover,
+body.theme-landing .bg-slate-900:hover {
+  filter: brightness(1.05);
+}

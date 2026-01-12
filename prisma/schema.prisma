@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  owner
+  member
+}
+
+enum CaseStatus {
+  INTAKE
+  DIAGNOSING
+  REPAIRING
+  COMPLETED
+  RETURNED
+  DECLINED
+  CANCELLED
+  BUYBACK
+  DISPOSED
+}
+
+enum Outcome {
+  SUCCESS
+  FAILURE
+  UNRESOLVED
+}
+
+enum FinalDecision {
+  REPAIR
+  RETURN
+  BUYBACK
+  DISPOSE
+}
+
+enum AttachmentType {
+  PHOTO
+  DOC
+}
+
+model Organization {
+  id                  Int      @id @default(autoincrement())
+  name                String
+  createdAt           DateTime @default(now())
+  stallThresholdsJson String   @default("{\"INTAKE\":2,\"DIAGNOSING\":3,\"REPAIRING\":5,\"COMPLETED\":0,\"RETURNED\":0,\"DECLINED\":0,\"CANCELLED\":0,\"BUYBACK\":0,\"DISPOSED\":0}")
+  attachmentLimitFree Int      @default(5)
+  attachmentLimitPaid Int      @default(10)
+  users               User[]
+  cases               Case[]
+  attachments         Attachment[]
+  caseStatusHistories CaseStatusHistory[]
+}
+
+model User {
+  id           String   @id @db.Uuid
+  orgId        Int
+  org          Organization @relation(fields: [orgId], references: [id])
+  name         String
+  email        String   @unique
+  role         Role
+  createdAt    DateTime @default(now())
+  assignedCases Case[]  @relation("CaseAssignee")
+  @@index([orgId])
+}
+
+model Case {
+  id              String        @id @default(uuid()) @db.Uuid
+  orgId           Int
+  org             Organization  @relation(fields: [orgId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  receivedAt      DateTime
+  assigneeUserId  String?       @db.Uuid
+  assignee        User?         @relation("CaseAssignee", fields: [assigneeUserId], references: [id])
+  status          CaseStatus    @default(INTAKE)
+  customerName    String?
+  customerContact String?
+  customerNote    String?
+  manufacturer    String?
+  modelName       String?
+  modelNumber     String?
+  boardNumber     String?
+  symptom         String
+  initialHypothesis String?
+  actionsTaken    String?
+  measurements    String?
+  notDone         String?
+  notDoneReason   String?
+  outcome         Outcome?
+  finalDecision   FinalDecision?
+  shareAnonymously Boolean      @default(false)
+  shareNote       String?
+  deletedAt       DateTime?
+  attachments     Attachment[]
+  statusHistory   CaseStatusHistory[]
+
+  @@index([orgId])
+  @@index([status])
+  @@index([receivedAt])
+}
+
+model CaseStatusHistory {
+  id        Int        @id @default(autoincrement())
+  caseId    String     @db.Uuid
+  case      Case       @relation(fields: [caseId], references: [id])
+  orgId     Int
+  org       Organization @relation(fields: [orgId], references: [id])
+  status    CaseStatus
+  createdAt DateTime   @default(now())
+
+  @@index([orgId])
+  @@index([caseId])
+  @@index([status])
+}
+
+model Attachment {
+  id        Int        @id @default(autoincrement())
+  caseId    String     @db.Uuid
+  case      Case       @relation(fields: [caseId], references: [id])
+  orgId     Int
+  org       Organization @relation(fields: [orgId], references: [id])
+  type      AttachmentType
+  fileName  String
+  filePath  String
+  mimeType  String
+  size      Int
+  createdAt DateTime   @default(now())
+
+  @@index([orgId])
+  @@index([caseId])
+}
