@@ -2,10 +2,8 @@ import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "./supabaseTypes";
 
-function createClient() {
+function createClient({ allowSet }: { allowSet: boolean }) {
   const cookieStore = cookies();
-  const canSet = typeof (cookieStore as any).set === "function";
-  const canDelete = typeof (cookieStore as any).delete === "function";
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "",
@@ -15,13 +13,19 @@ function createClient() {
           return cookieStore.get(name)?.value;
         },
         set(name: string, value: string, options: any) {
-          if (canSet) {
+          if (!allowSet) return;
+          try {
             (cookieStore as any).set({ name, value, ...options });
+          } catch {
+            // Ignore in Server Components where cookies are read-only.
           }
         },
         remove(name: string, options: any) {
-          if (canDelete) {
+          if (!allowSet) return;
+          try {
             (cookieStore as any).delete({ name, ...options });
+          } catch {
+            // Ignore in Server Components where cookies are read-only.
           }
         },
       },
@@ -30,9 +34,9 @@ function createClient() {
 }
 
 export function serverClient() {
-  return createClient();
+  return createClient({ allowSet: false });
 }
 
 export function routeClient() {
-  return createClient();
+  return createClient({ allowSet: true });
 }
