@@ -14,7 +14,7 @@ export async function DELETE(_: Request, { params }: Params) {
       where: { id: attachmentId, orgId: user.orgId },
     });
     if (!attachment) {
-      throw new ApiError(404, "添付が見つかりません。");
+      throw new ApiError(404, "Attachment not found.");
     }
     await prisma.attachment.delete({ where: { id: attachmentId } });
 
