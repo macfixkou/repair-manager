@@ -4,6 +4,8 @@ import { ApiError, handleApiError } from "@/lib/apiError";
 import { routeClient } from "@/lib/supabaseServer";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();

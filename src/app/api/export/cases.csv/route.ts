@@ -4,6 +4,8 @@ import { listCases } from "@/lib/caseService";
 import { handleApiError } from "@/lib/apiError";
 import { stringify } from "csv-stringify/sync";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   try {
     const user = await requireUser();

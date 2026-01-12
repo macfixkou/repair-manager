@@ -7,6 +7,8 @@ import { createClient } from "@supabase/supabase-js";
 
 type Params = { params: { id: string } };
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request, { params }: Params) {
   try {
     const user = await requireUser();
