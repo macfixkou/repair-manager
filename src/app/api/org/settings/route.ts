@@ -6,6 +6,8 @@ import { prisma } from "@/lib/prisma";
 import { parseStallThresholds } from "@/lib/stall";
 import { orgSettingsSchema } from "@/lib/validation";
 
+export const dynamic = "force-dynamic";
+
 const DEFAULT_ATTACHMENT_LIMIT_FREE = 5;
 const DEFAULT_ATTACHMENT_LIMIT_PAID = 10;
 
